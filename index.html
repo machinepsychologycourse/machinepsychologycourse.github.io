@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine Psychology — PSL Week, March 2027</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --muted: #5c5c5c;
+    --faint: #8a8a8a;
+    --line: #e2ddd4;
+    --paper: #faf8f4;
+    --card: #ffffff;
+    --accent: #7a3b2e;      /* oxblood */
+    --accent-soft: #f3e9e5;
+    --link: #8a4034;
+    --band: #2b2723;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --maxw: 940px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--serif);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.62;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ---- Top band / hero ---- */
+  header.hero {
+    background: var(--band);
+    color: #f4efe8;
+    padding: 3.4rem 1.5rem 3rem;
+    border-bottom: 4px solid var(--accent);
+  }
+  .hero-inner { max-width: var(--maxw); margin: 0 auto; }
+  .kicker {
+    font-family: var(--sans);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: #c9a99f;
+    margin: 0 0 1rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    line-height: 1.08;
+    margin: 0 0 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .hero .lede {
+    font-size: 1.18rem;
+    color: #ded5c9;
+    max-width: 40em;
+    margin: 0 0 1.6rem;
+  }
+  .hero-meta {
+    font-family: var(--sans);
+    font-size: 0.86rem;
+    color: #bdae9f;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    border-top: 1px solid #443f39;
+    padding-top: 1.3rem;
+  }
+  .hero-meta b { color: #ece3d7; font-weight: 600; }
+
+  /* ---- Nav ---- */
+  nav.toc {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(250,248,244,0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.toc ul {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 1rem;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.3rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+  }
+  nav.toc a {
+    display: block;
+    padding: 0.7rem 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  nav.toc a:hover { color: var(--accent); text-decoration: none; }
+
+  /* ---- Layout ---- */
+  main { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
+  section { padding: 3rem 0 1rem; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  .sec-label {
+    font-family: var(--sans);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.72rem;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+    font-weight: 600;
+  }
+  h2 {
+    font-size: 1.9rem;
+    margin: 0 0 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  h3 { font-size: 1.28rem; margin: 1.8rem 0 0.6rem; font-weight: 600; }
+  p { margin: 0 0 1.05rem; }
+  .prose { max-width: 42em; }
+  .muted { color: var(--muted); }
+  .small { font-size: 0.92rem; }
+
+  /* ---- Schedule grid ---- */
+  .week {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.6rem;
+    margin: 1.4rem 0 0.5rem;
+    font-family: var(--sans);
+  }
+  .day {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .day .dh {
+    background: var(--accent-soft);
+    padding: 0.6rem 0.7rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .day .dh .dow { font-weight: 700; font-size: 0.9rem; color: var(--accent); }
+  .day .dh .dt { font-size: 0.72rem; color: var(--muted); }
+  .slot { padding: 0.65rem 0.7rem; font-size: 0.78rem; border-bottom: 1px dashed var(--line); }
+  .slot:last-child { border-bottom: none; }
+  .slot .st { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.62rem; color: var(--faint); display: block; margin-bottom: 0.15rem; }
+  .slot.am { background: #fff; }
+  .slot.pm { background: #fbfaf7; }
+  .slot b { font-weight: 600; color: var(--ink); }
+
+  /* ---- Lecture / session cards ---- */
+  details.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin: 0.9rem 0;
+    overflow: hidden;
+  }
+  details.card[open] { box-shadow: 0 2px 18px rgba(60,40,30,0.06); }
+  details.card > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1.1rem 1.3rem;
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+  }
+  details.card > summary::-webkit-details-marker { display: none; }
+  .num {
+    font-family: var(--sans);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.85rem;
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 0.15rem 0.55rem;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 0.15rem;
+  }
+  .sm-title { font-size: 1.18rem; font-weight: 600; flex: 1; }
+  .sm-title .q { display: block; font-family: var(--sans); font-size: 0.8rem; font-weight: 400; color: var(--muted); margin-top: 0.25rem; }
+  summary .chev { font-family: var(--sans); color: var(--faint); font-size: 0.8rem; align-self: center; }
+  details[open] summary .chev { color: var(--accent); }
+  .card-body { padding: 0.2rem 1.3rem 1.4rem; }
+  .card-body .prose { max-width: none; }
+  .lo {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    background: #fbfaf7;
+    border-left: 3px solid var(--accent);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .lo b { display: block; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.68rem; color: var(--accent); margin-bottom: 0.35rem; }
+  .readings { font-family: var(--sans); font-size: 0.88rem; margin-top: 0.9rem; }
+  .readings > b { display:block; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.68rem; color: var(--faint); margin-bottom: 0.4rem; }
+  .readings ul { margin: 0; padding-left: 1.1rem; }
+  .readings li { margin-bottom: 0.3rem; }
+  .tag { display:inline-block; font-family: var(--sans); font-size: 0.66rem; letter-spacing: 0.04em; text-transform: uppercase; background:#eee7dd; color: var(--muted); border-radius: 4px; padding: 0.05rem 0.4rem; margin-left: 0.35rem; vertical-align: middle; }
+  .tag.primary { background: var(--accent); color: #fff; }
+  .tag.counter { background:#3a4a55; color:#fff; }
+  .tag.opt { background:#eee; color:#888; }
+  .disagree { font-size: 0.92rem; color: var(--muted); border-top: 1px solid var(--line); margin-top: 1rem; padding-top: 0.8rem; }
+  .disagree b { color: var(--accent); font-family: var(--sans); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ---- Two-track callout ---- */
+  .tracks { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.2rem 0; }
+  .track { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1.1rem 1.2rem; }
+  .track h4 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+  .track .who { font-family: var(--sans); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.5rem; }
+  .track p { font-size: 0.95rem; margin: 0; }
+
+  /* ---- Topic menu ---- */
+  .topics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin: 1.2rem 0; }
+  .topic { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 0.9rem 1rem; font-size: 0.95rem; }
+  .topic h4 { margin: 0 0 0.3rem; font-size: 1rem; }
+  .topic p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+
+  /* ---- Reading list ---- */
+  .reflist { font-family: var(--sans); font-size: 0.92rem; }
+  .reflist .rgroup { margin-bottom: 1.6rem; }
+  .reflist .rgroup > h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin: 0 0 0.7rem; border-bottom: 1px solid var(--line); padding-bottom: 0.35rem; }
+  .ref { padding: 0.5rem 0; border-bottom: 1px dashed var(--line); display: flex; gap: 0.6rem; align-items: baseline; }
+  .ref:last-child { border-bottom: none; }
+  .ref .yr { color: var(--faint); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 0.85rem; min-width: 3.1rem; }
+  .ref .rmain { flex: 1; }
+  .ref .rmain .rt { font-weight: 600; color: var(--ink); }
+  .ref .rmain .ra { color: var(--muted); }
+  .ref .rmain .rv { color: var(--faint); font-style: italic; }
+
+  /* ---- Assessment / callouts ---- */
+  .callout { background: var(--accent-soft); border-radius: 10px; padding: 1.3rem 1.5rem; margin: 1.2rem 0; }
+  .callout p:last-child { margin-bottom: 0; }
+  .pill { display:inline-block; font-family: var(--sans); font-size: 0.72rem; background:#fff; border:1px solid var(--line); border-radius: 20px; padding: 0.25rem 0.8rem; margin: 0.2rem 0.3rem 0.2rem 0; }
+
+  footer { max-width: var(--maxw); margin: 0 auto; padding: 2.5rem 1.5rem 3.5rem; font-family: var(--sans); font-size: 0.82rem; color: var(--faint); }
+  footer a { color: var(--muted); }
+
+  @media (max-width: 760px) {
+    body { font-size: 17px; }
+    .week { grid-template-columns: 1fr; }
+    .tracks, .topics { grid-template-columns: 1fr; }
+    nav.toc ul { overflow-x: auto; flex-wrap: nowrap; }
+    nav.toc a { white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">PSL Intensive Week &middot; Master's &amp; PhD</p>
+    <h1>Machine Psychology</h1>
+    <p class="lede">The empirical study of artificial cognitive systems using the conceptual and methodological toolkit developed for studying humans and animals.</p>
+    <div class="hero-meta">
+      <span><b>Dates</b> 1&ndash;5 March 2027</span>
+      <span><b>Format</b> Mornings: theory &middot; Afternoons: practical</span>
+      <span><b>Language</b> English</span>
+      <span><b>Assessment</b> Group presentation (pass/fail)</span>
+      <span><b>Convenor</b> Stefano Palminteri, ENS&ndash;PSL / Inserm</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#lectures">Lectures</a></li>
+    <li><a href="#practical">Practical</a></li>
+    <li><a href="#topics">Project topics</a></li>
+    <li><a href="#assessment">Assessment</a></li>
+    <li><a href="#readings">Readings</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <section id="overview">
+    <p class="sec-label">The course</p>
+    <h2>Studying machines as behaving objects</h2>
+    <div class="prose">
+      <p>Large language models are now consulted by hundreds of millions of people, yet nobody &mdash; including the teams that build them &mdash; can say with confidence how they produce what they produce. They are neural networks with billions of parameters, trained on corpora too large to inspect. Their most interesting capacities &mdash; in-context learning, apparent reasoning, apparent theory of mind &mdash; were not designed in but <em>emerged</em>, and emergent capacities are precisely the ones that cannot be read off from the components that gave rise to them.</p>
+      <p>There are two ways to understand such a system. One is to look inside, tracing how weights and activations implement behaviour: mechanistic interpretability, the analogue of neuroscience. The other is to look at what the system <em>does</em> &mdash; to treat the model as a black box, manipulate its inputs, measure its outputs, and infer the processes that best explain the relationship between them. This is the analogue of psychology, and the subject of the week.</p>
+      <p>The idea of studying machines as behaving objects is not new: Herbert Simon held that artificial intelligence is a genuine empirical science, and Rahwan and colleagues argued in 2019 for a science of <em>machine behaviour</em>. The specific proposal to run models through the experimental paradigms of human psychology was crystallised by Hagendorff and colleagues as <em>machine psychology</em>. The premise of this week is that the programme is a rigorous method rather than a loose analogy &mdash; provided we are careful about two things: the epistemology that licenses the inference, and the fact that we are studying what one might call an <em>alien mind</em>, a system that perceives and acts through a world of tokens, not bodies and senses, and whose behaviour may look human while resting on quite different underlying processes.</p>
+      <p>That tension organises the course. Machine psychology is legitimate; the same inferential logic that lets us attribute latent processes to humans applies to any cognitive system. But the interpretation is not transferable wholesale, and the temptation to read a model as we read a person is exactly what makes the discipline both necessary and hazardous.</p>
+    </div>
+    <div class="callout">
+      <p class="small" style="margin:0;"><b>Who this is for.</b> Master's and PhD students in cognitive science, behavioural science and machine learning. No prior modelling background is assumed; the little that is needed is built up gently over the week. Mornings are lectures; afternoons are a hands-on group project, presented on the Friday.</p>
+    </div>
+  </section>
+
+  <!-- ===================== SCHEDULE ===================== -->
+  <section id="schedule">
+    <p class="sec-label">At a glance</p>
+    <h2>The week</h2>
+    <p class="prose muted">Each morning lecture supplies a premise the afternoon session then puts to work. The logic runs <em>motivation &rarr; licence &rarr; method &rarr; interpretation</em>: each lecture removes an objection to the next.</p>
+    <div class="week">
+      <div class="day">
+        <div class="dh"><span class="dow">Monday</span> <span class="dt">1 March</span></div>
+        <div class="slot am"><span class="st">Morning &middot; Lecture 1</span> <b>Why machine psychology?</b> The black box and the case for behaviour</div>
+        <div class="slot pm"><span class="st">Afternoon &middot; Practical 1</span> Topic, pipeline, first contact</div>
+      </div>
+      <div class="day">
+        <div class="dh"><span class="dow">Tuesday</span> <span class="dt">2 March</span></div>
+        <div class="slot am"><span class="st">Morning &middot; Lecture 2</span> <b>Philosophical foundations</b> The behavioural inference principle</div>
+        <div class="slot pm"><span class="st">Afternoon &middot; Practical 2</span> Sharpening the question, building the task</div>
+      </div>
+      <div class="day">
+        <div class="dh"><span class="dow">Wednesday</span> <span class="dt">3 March</span></div>
+        <div class="slot am"><span class="st">Morning &middot; Lecture 3</span> <b>Adapting the experiment</b> Task design, analysis, the notion of subject</div>
+        <div class="slot pm"><span class="st">Afternoon &middot; Practical 3</span> Data collection and first analysis</div>
+      </div>
+      <div class="day">
+        <div class="dh"><span class="dow">Thursday</span> <span class="dt">4 March</span></div>
+        <div class="slot am"><span class="st">Morning &middot; Lecture 4</span> <b>Scope and interpretation</b> Alien minds and the limits of the claim</div>
+        <div class="slot pm"><span class="st">Afternoon &middot; Practical 4</span> Interpretation and presentation prep</div>
+      </div>
+      <div class="day">
+        <div class="dh"><span class="dow">Friday</span> <span class="dt">5 March</span></div>
+        <div class="slot am"><span class="st">Morning &middot; Assessed</span> <b>Group presentations</b> and validation</div>
+        <div class="slot pm"><span class="st">Afternoon</span> <span class="muted">&mdash;</span></div>
+      </div>
+    </div>
+    <p class="small muted">Timetable subject to final confirmation by the PSL week administration.</p>
+  </section>
+
+  <!-- ===================== LECTURES ===================== -->
+  <section id="lectures">
+    <p class="sec-label">Mornings</p>
+    <h2>The four lectures</h2>
+    <p class="prose muted">Click any lecture to expand its content, learning objectives and core readings.</p>
+
+    <details class="card" open>
+      <summary>
+        <span class="num">L1</span>
+        <span class="sm-title">Why machine psychology? The black box and the case for behaviour
+          <span class="q">What are these systems, why must we <em>discover</em> how they work despite having built them, and why through behaviour rather than code?</span>
+        </span>
+        <span class="chev">expand</span>
+      </summary>
+      <div class="card-body">
+        <div class="prose">
+          <p>The lecture opens with a shared-ground primer &mdash; <em>what is a language model</em>: a network trained to predict the next token, the tokeniser, the transformer's attention mechanism, and a first pass over the training pipeline (pretraining, supervised fine-tuning, RLHF, and increasingly RLVR). It then states the paradox: we hold every weight and still cannot account for the competence, because the interesting capacities emerged. It distinguishes the two research programmes &mdash; mechanistic interpretability (look inside; currently limited to narrow circuits) and behavioural study (input&ndash;output relations) &mdash; and places the enterprise in its lineage from Simon through Rahwan to Hagendorff. The load-bearing distinction is between a <em>benchmark</em> (how well a system performs) and a <em>psychological experiment</em> (designed so that different underlying processes yield different behaviours). It closes on a first result: Binz and Schulz on GPT-3, and biases that appeared in one model generation and vanished in the next.</p>
+        </div>
+        <div class="lo"><b>Learning objectives</b>Give a working account of what a language model is and how it is trained; state the black-box problem and why parameter access does not confer understanding; contrast interpretability and behavioural approaches; locate machine psychology in its lineage; and distinguish a diagnostic experiment from a performance benchmark.</div>
+        <div class="readings">
+          <b>Core readings</b>
+          <ul>
+            <li><a href="https://www.sciencedirect.com/science/article/pii/000437029500039H">Simon, <em>Artificial intelligence: an empirical science</em> (1995)</a></li>
+            <li><a href="https://doi.org/10.1038/s41586-019-1138-y">Rahwan et al., <em>Machine behaviour</em>, Nature (2019)</a></li>
+            <li><a href="https://arxiv.org/abs/2303.13988">Hagendorff et al., <em>Machine Psychology</em> (2024)</a> &mdash; introduction and theory</li>
+            <li><a href="https://doi.org/10.1073/pnas.2218523120">Binz &amp; Schulz, <em>Using cognitive psychology to understand GPT-3</em>, PNAS (2023)</a></li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary>
+        <span class="num">L2</span>
+        <span class="sm-title">The philosophical foundations: methodological behaviourism and the behavioural inference principle
+          <span class="q">Are we entitled to infer unobservable cognitive processes from observable behaviour &mdash; on what grounds, and against which classic objections?</span>
+        </span>
+        <span class="chev">expand</span>
+      </summary>
+      <div class="card-body">
+        <div class="prose">
+          <p>The lecture begins from the claim that cognitive science, its self-image notwithstanding, is at root a <em>methodological behaviourism</em>: it infers latent processes that best explain public behaviour, always open to correction. It anchors this in Turing's 1950 imitation game &mdash; the behavioural inference principle is at once Turing's heir and his correction &mdash; and introduces the explanandum/explanans distinction to police the confusion between behaviour and the constructs that explain it. The inferential machinery is built gently as a conceptual Bayes rule: the probability of a process given a behaviour rises with how specifically the process predicts it (likelihood), is weighted by how plausible the process is <em>in this kind of system</em> (prior), and is discounted by how easily the behaviour could arise otherwise (marginal). This single expression explains why identical behaviour warrants different conclusions in a human, a monkey and a model, and makes the mimicry problem precise. The lecture separates behavioural equivalence, computational equivalence and the behavioural inference principle; meets the Chinese Room, Blockhead and zombie objections from within an inductive framework; and turns the lens on the interpreter, naming the biases that distort both inflationary and deflationary readings.</p>
+        </div>
+        <div class="lo"><b>Learning objectives</b>Explain inference from behaviour to latent constructs and keep explanandum and explanans apart; trace the line from Turing's imitation game to theory-heavy behavioural inference; read the conceptual Bayesian formula and use it to explain why the same behaviour licenses different inferences across systems; rebut the Chinese Room / Blockhead / zombie objections; and name the biases that threaten the interpreter.</div>
+        <div class="readings">
+          <b>Core readings</b>
+          <ul>
+            <li><a href="https://academic.oup.com/nc/article/2026/1/niag002/8487499">Palminteri &amp; Wu, <em>Beyond computational equivalence: the behavioural inference principle</em> (2026)</a> <span class="tag primary">primary</span></li>
+            <li><a href="https://doi.org/10.1093/mind/LIX.236.433">Turing, <em>Computing machinery and intelligence</em>, Mind (1950)</a> <span class="tag">historical anchor</span></li>
+            <li><a href="https://www.sciencedirect.com/science/article/pii/S2352154626000367">Palminteri &amp; Pistilli, <em>The cognitive biases that may exacerbate inflationary and deflationary positions about LLMs</em> (2026)</a></li>
+            <li><a href="https://doi.org/10.1037/bne0000471">Niv, <em>The primacy of behavioral research for understanding the brain</em> (2021)</a></li>
+            <li><a href="https://arxiv.org/abs/2212.03551">Shanahan, <em>Talking about large language models</em> (2022)</a> <span class="tag counter">counter-voice</span></li>
+          </ul>
+        </div>
+        <p class="disagree"><b>Where the disagreement lives</b><br>Whether behaviour can ever suffice (Block, Searle, biological-naturalist positions) versus the functionalist and methodological-behaviourist reply. Both are taught.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary>
+        <span class="num">L3</span>
+        <span class="sm-title">Adapting the experiment: task design, analysis, and the notion of subject
+          <span class="q">How must a psychological experiment be rebuilt when the subject has no body, no fixed identity, a possibly contaminated memory of the test, and outputs that shift with the wording of the prompt?</span>
+        </span>
+        <span class="chev">expand</span>
+      </summary>
+      <div class="card-body">
+        <div class="prose">
+          <p>The lecture reactivates the primer from Lecture 1 and draws out its consequences: each training stage shapes behaviour and priors differently, which is why the mechanics matter for design. It introduces the <em>Umwelt</em> of the model &mdash; von Uexk&uuml;ll's term for the world as a creature perceives and acts on it &mdash; as the organising idea: the model's world is a stream of token identifiers, so tasks built on human sensory experience do not translate cleanly. It then works through the design problems: <em>modality</em> (converting a perceptual paradigm into text without giving the answer away), <em>contamination</em> (the model may have seen the test in training, so one measures retrieval rather than cognition &mdash; with remedies including reframing, procedural generation and black-box detection), and <em>prompt variability and stochasticity</em> (small wording changes and sampling both move the output, requiring paraphrase batteries and repeated administration). This yields the reconceived <em>notion of subject</em>: a model is better treated as a population of participants than as one individual, which reshapes the statistics.</p>
+        </div>
+        <div class="lo"><b>Learning objectives</b>Reason from a model's processing and training stages to its Umwelt; convert a human paradigm into a text-based task and justify each choice; identify and mitigate contamination, prompt sensitivity and sampling variability; explain why a model is analysed as a population and what that implies statistically; and specify the controls a given inference requires.</div>
+        <div class="readings">
+          <b>Core readings</b>
+          <ul>
+            <li>Yax &amp; Palminteri, <em>The motivation and methods for machine psychology</em> (chapter) <span class="tag primary">primary</span> <span class="tag opt">provided in class</span></li>
+            <li><a href="https://arxiv.org/abs/2303.13988">Hagendorff et al. (2024)</a> &mdash; design-and-analysis section</li>
+            <li><a href="https://arxiv.org/abs/2312.01276">Ivanova, <em>Running cognitive evaluations on LLMs: the do's and don'ts</em> (2023)</a></li>
+            <li><a href="https://arxiv.org/abs/2401.14530">Hayes, Yax &amp; Palminteri, <em>Relative value biases in LLMs</em> (2024)</a> <span class="tag">worked example</span></li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary>
+        <span class="num">L4</span>
+        <span class="sm-title">Scope and interpretation: alien minds, anthropomorphism, and the limits of the claim
+          <span class="q">Once we have a clean result, what may we conclude? Can models stand in for human participants? And how do we keep interpretation honest?</span>
+        </span>
+        <span class="chev">expand</span>
+      </summary>
+      <div class="card-body">
+        <div class="prose">
+          <p>The lecture returns to the Bayesian compass from Lecture 2 to make the central interpretive point precise: the likelihood term is system-independent, but the prior is not, because a network trained on text need not develop the mechanisms evolution installed in brains. So similar behaviour need not mean similar cognition; behavioural correspondence is the beginning of an inference, not its conclusion. It develops the specific hazards &mdash; <em>anthropomorphism</em> (importing human interpretive defaults into a system that does not share our Umwelt) and <em>goal alignment</em> (which answer the model is even trying to give: the statistically human answer, the answer a user would like, or the correct one). It surveys the encouraging-but-contested proposals to use models as substitutes for human participants and defends the course's position &mdash; the method is legitimate, the substitution is not automatic &mdash; before extending the inflationary/deflationary frame into the ethical and public, with the consciousness debate as the sharpest case study.</p>
+        </div>
+        <div class="lo"><b>Learning objectives</b>Explain why behavioural similarity underdetermines cognitive similarity, using the prior term; identify anthropomorphic and goal-alignment confounds in an interpretation; state a defensible position on whether and when models can proxy for human participants; and analyse a public claim about LLMs for the inflationary or deflationary bias shaping it.</div>
+        <div class="readings">
+          <b>Core readings</b>
+          <ul>
+            <li><a href="https://www.sciencedirect.com/science/article/pii/S2352154626000367">Palminteri &amp; Pistilli (2026)</a> &mdash; ethical/public stakes and moral status</li>
+            <li><a href="https://academic.oup.com/nc/article/2026/1/niag002/8487499">Palminteri &amp; Wu (2026)</a> &mdash; priors and consciousness attribution</li>
+            <li><a href="https://doi.org/10.1016/j.tics.2024.01.011">Mahowald et al., <em>Dissociating language and thought in large language models</em> (2024)</a></li>
+            <li><a href="https://doi.org/10.1038/s41586-023-06647-8">Shanahan, McDonell &amp; Reynolds, <em>Role play with large language models</em>, Nature (2023)</a></li>
+            <li><a href="https://arxiv.org/abs/2308.08708">Butlin et al., <em>Consciousness in artificial intelligence</em> (2023)</a> <span class="tag opt">optional contrast</span></li>
+          </ul>
+        </div>
+        <p class="disagree"><b>Where the disagreement lives</b><br>The whole lecture is disagreement &mdash; substitution optimists versus sceptics, inflationary versus deflationary readings, consciousness attributed versus withheld. The aim is fluency in the strongest version of each, not settlement.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ===================== PRACTICAL ===================== -->
+  <section id="practical">
+    <p class="sec-label">Afternoons</p>
+    <h2>The practical strand</h2>
+    <div class="prose">
+      <p>The mornings argue that machine psychology is a legitimate method; the afternoons make you do it. Working in small groups, you will turn a psychological result into a contamination-aware, prompt-robust experiment on a language model, collect data, analyse it as one would analyse a human sample, and defend an interpretation calibrated to the evidence. That experience is what makes the morning caveats concrete: the anthropomorphism worries of Lecture 4 land far harder once you have felt how difficult a clean, prompt-robust task is to build.</p>
+      <p>The five sessions follow the dependency structure of an experiment, compressed into a week: fix a question and a prior, design a text-based task compatible with the model's Umwelt, control for contamination and variability, collect data, analyse the model as a population, and interpret with the Bayesian compass. A throwaway pilot is pushed into Monday afternoon on purpose &mdash; the fastest way to expose a broken task is to run it once.</p>
+    </div>
+
+    <h3>Two tracks, one experiment</h3>
+    <p class="prose muted">Every group works on the same scientific object but reaches it by one of two routes, so a mixed cohort can move together. Using a language model as a coding assistant is explicitly encouraged &mdash; a fitting move in a course about language models.</p>
+    <div class="tracks">
+      <div class="track">
+        <div class="who">For confident coders</div>
+        <h4>Template track</h4>
+        <p>A minimal, well-documented starter repository &mdash; an API client, a prompt-batching loop, a results logger &mdash; which you extend to your own task.</p>
+      </div>
+      <div class="track">
+        <div class="who">For everyone else</div>
+        <h4>Notebook track</h4>
+        <p>A fuller, cell-by-cell notebook that already implements one complete example experiment (the text bandit task), which you adapt by changing the task text, conditions and analysis rather than writing the scaffolding.</p>
+      </div>
+    </div>
+
+    <h3>Session by session</h3>
+
+    <details class="card">
+      <summary><span class="num">Mon</span><span class="sm-title">Topic, pipeline, first contact</span><span class="chev">expand</span></summary>
+      <div class="card-body"><div class="prose">
+        <p>By the end, each group has chosen a topic and can state in one sentence the psychological finding it will test; has seen the full pipeline demonstrated on one worked example (the text bandit task); has working online access to at least one open-weight model; and has run a throwaway pilot &mdash; one prompt sent, one response logged &mdash; to confirm the plumbing works. This is the &ldquo;first contact&rdquo; that surfaces access problems while a TA is in the room to fix them.</p>
+        <p class="small muted"><b>Checkpoint:</b> a one-line topic statement approved by an instructor, and one logged model response.</p>
+      </div></div>
+    </details>
+
+    <details class="card">
+      <summary><span class="num">Tue</span><span class="sm-title">Sharpening the question, building the task</span><span class="chev">expand</span></summary>
+      <div class="card-body"><div class="prose">
+        <p>Convert a topic into a defensible experiment. Groups write their question as a behavioural inference &mdash; <em>which cognitive process, from which behaviour, against which alternative, and what would each hypothesis predict?</em> &mdash; and design the task so that different underlying processes would produce different behaviours. Three design obligations are imposed as a checklist before any real data are collected: <b>contamination</b> (is the item one the model likely saw in training, and how will that be reframed or checked?), <b>prompt variability</b> (prepare a battery of paraphrases, not a single wording), and <b>stochasticity</b> (administer each condition many times).</p>
+        <p class="small muted"><b>Checkpoint:</b> a written task specification &mdash; question as inference, task text, paraphrase set, contamination and repetition plan.</p>
+      </div></div>
+    </details>
+
+    <details class="card">
+      <summary><span class="num">Wed</span><span class="sm-title">Data collection and first analysis</span><span class="chev">expand</span></summary>
+      <div class="card-body"><div class="prose">
+        <p>Groups run the full design &mdash; every condition, across the paraphrase battery, repeated enough to estimate response distributions &mdash; and, where their question and provider allow, run a contamination check. They then analyse, treating each of the model's repeated responses as analogous to one participant, which licenses ordinary population statistics and comparison with a human reference. Groups that finish early begin the model-comparison extension: repeating the experiment on a second, deliberately different open-weight model.</p>
+        <p class="small muted"><b>Checkpoint:</b> a dataset and at least one figure or statistic bearing on the research question.</p>
+      </div></div>
+    </details>
+
+    <details class="card">
+      <summary><span class="num">Thu</span><span class="sm-title">Interpretation and presentation preparation</span><span class="chev">expand</span></summary>
+      <div class="card-body"><div class="prose">
+        <p>Groups assemble the Friday talk around the pipeline they have walked, and apply the Bayesian compass honestly: behavioural similarity to humans is the beginning of an inference, not its end. They name the confounds their result cannot escape &mdash; goal alignment chief among them &mdash; and state where their result sits between the inflationary and deflationary readings. A strong talk states what the result licenses and, in the same breath, what it does not.</p>
+        <p class="small muted"><b>Checkpoint:</b> a complete draft presentation and a completed rehearsal.</p>
+      </div></div>
+    </details>
+
+    <details class="card">
+      <summary><span class="num">Fri</span><span class="sm-title">Presentations and validation</span><span class="chev">expand</span></summary>
+      <div class="card-body"><div class="prose">
+        <p>Each group presents and defends its experiment (a ten-to-fifteen-minute talk with questions). This is the assessed deliverable. The rubric rewards methodological honesty over headline results: a clean null, well interpreted, passes as comfortably as a positive finding.</p>
+      </div></div>
+    </details>
+  </section>
+
+  <!-- ===================== TOPICS ===================== -->
+  <section id="topics">
+    <p class="sec-label">Project menu</p>
+    <h2>Candidate topics</h2>
+    <p class="prose muted">Pick from this list or propose your own for instructor approval. Every topic must have a clear human result to test against, be renderable in text without depending on perception, and admit a discriminating design rather than a benchmark.</p>
+    <div class="topics">
+      <div class="topic"><h4>Reinforcement learning &amp; value encoding</h4><p>The text bandit task: does a model encode absolute or relative value? The chapter's own worked example, with scaffolding ready to go.</p></div>
+      <div class="topic"><h4>Heuristics &amp; biases</h4><p>Framing, anchoring, the conjunction fallacy, base-rate neglect &mdash; rendered in text. Contamination is the central obstacle, and therefore the central lesson.</p></div>
+      <div class="topic"><h4>The Cognitive Reflection Test &amp; contamination</h4><p>Use a heavily-memorised instrument to <em>study contamination</em>: detect it, reframe items, and show the behaviour change. Best with log-probability access.</p></div>
+      <div class="topic"><h4>Social &amp; economic games</h4><p>Ultimatum, dictator, trust, prisoner's dilemma as text &mdash; do model choices track human distributions? Goal alignment (sycophancy) is the interpretive crux.</p></div>
+      <div class="topic"><h4>Prompt sensitivity as the object</h4><p>Rather than treating paraphrase variation as noise, measure it: how much does a meaning-preserving reformatting move a decision?</p></div>
+      <div class="topic"><h4>Cross-model comparison</h4><p>Take any one effect and ask whether it holds across deliberately different open-weight models, using PhyloLM-style reasoning to choose them.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== ASSESSMENT ===================== -->
+  <section id="assessment">
+    <p class="sec-label">Validation</p>
+    <h2>Assessment</h2>
+    <div class="prose">
+      <p>Assessment is pass/fail on two binding criteria taken together: attendance across the week, and a satisfactory final group presentation on the Friday. A lightweight, shared rubric is communicated on Monday so the target is known from the outset.</p>
+    </div>
+    <div class="callout">
+      <p class="small" style="margin-bottom:0.7rem;"><b>A strong presentation shows:</b></p>
+      <span class="pill">A clear research question stated as an inference</span>
+      <span class="pill">A task that could actually discriminate the hypotheses</span>
+      <span class="pill">Visible handling of contamination, prompt variability &amp; stochasticity</span>
+      <span class="pill">An analysis that treats the model as a population</span>
+      <span class="pill">An interpretation calibrated to the evidence, including its limits</span>
+    </div>
+    <p class="small muted">The rubric rewards methodological honesty over headline results. A resit route (a revised presentation or short written report) is available within the following week.</p>
+  </section>
+
+  <!-- ===================== READINGS ===================== -->
+  <section id="readings">
+    <p class="sec-label">Bibliography</p>
+    <h2>Core reading list</h2>
+    <p class="prose muted">One primary paper per evening is a sensible load for a one-week intensive; the remaining titles are offered as optional depth. Links point to the publisher of record or an open preprint.</p>
+
+    <div class="reflist">
+      <div class="rgroup">
+        <h4>Foundations &amp; motivation</h4>
+        <div class="ref"><span class="yr">1950</span><span class="rmain"><span class="rt"><a href="https://doi.org/10.1093/mind/LIX.236.433">Computing machinery and intelligence</a></span> &middot; <span class="ra">Turing, A. M.</span> &middot; <span class="rv">Mind</span></span></div>
+        <div class="ref"><span class="yr">1995</span><span class="rmain"><span class="rt"><a href="https://www.sciencedirect.com/science/article/pii/000437029500039H">Artificial intelligence: an empirical science</a></span> &middot; <span class="ra">Simon, H. A.</span> &middot; <span class="rv">Artificial Intelligence</span></span></div>
+        <div class="ref"><span class="yr">2019</span><span class="rmain"><span class="rt"><a href="https://doi.org/10.1038/s41586-019-1138-y">Machine behaviour</a></span> &middot; <span class="ra">Rahwan, I. et al.</span> &middot; <span class="rv">Nature</span></span></div>
+        <div class="ref"><span class="yr">2021</span><span class="rmain"><span class="rt"><a href="https://doi.org/10.1037/bne0000471">The primacy of behavioral research for understanding the brain</a></span> &middot; <span class="ra">Niv, Y.</span> &middot; <span class="rv">Behavioral Neuroscience</span></span></div>
+      </div>
+
+      <div class="rgroup">
+        <h4>Machine psychology as a method</h4>
+        <div class="ref"><span class="yr">2023</span><span class="rmain"><span class="rt"><a href="https://doi.org/10.1073/pnas.2218523120">Using cognitive psychology to understand GPT-3</a></span> &middot; <span class="ra">Binz, M. &amp; Schulz, E.</span> &middot; <span class="rv">PNAS</span></span></div>
+        <div class="ref"><span class="yr">2023</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2312.01276">Running cognitive evaluations on LLMs: the do's and the don'ts</a></span> &middot; <span class="ra">Ivanova, A. A.</span> &middot; <span class="rv">arXiv</span></span></div>
+        <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2303.13988">Machine Psychology</a></span> &middot; <span class="ra">Hagendorff, T. et al.</span> &middot; <span class="rv">arXiv</span></span></div>
+        <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2401.14530">Relative value biases in large language models</a></span> &middot; <span class="ra">Hayes, W. M., Yax, N. &amp; Palminteri, S.</span> &middot; <span class="rv">arXiv</span></span></div>
+        <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://www.nature.com/articles/s44271-024-00091-8">Studying and improving reasoning in humans and machines</a></span> &middot; <span class="ra">Yax, N., Anll&oacute;, H. &amp; Palminteri, S.</span> &middot; <span class="rv">Communications Psychology</span></span></div>
+        <div class="ref"><span class="yr">&mdash;</span><span class="rmain"><span class="rt">The motivation and methods for machine psychology (chapter)</span> &middot; <span class="ra">Yax, N. &amp; Palminteri, S.</span> &middot; <span class="rv">provided in class</span></span></div>
+      </div>
+
+      <div class="rgroup">
+        <h4>Epistemology &amp; interpretation</h4>
+        <div class="ref"><span class="yr">2022</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2212.03551">Talking about large language models</a></span> &middot; <span class="ra">Shanahan, M.</span> &middot; <span class="rv">arXiv</span> <span class="tag counter">counter-voice</span></span></div>
+        <div class="ref"><span class="yr">2023</span><span class="rmain"><span class="rt"><a href="https://doi.org/10.1038/s41586-023-06647-8">Role play with large language models</a></span> &middot; <span class="ra">Shanahan, M., McDonell, K. &amp; Reynolds, L.</span> &middot; <span class="rv">Nature</span></span></div>
+        <div class="ref"><span class="yr">2023</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2308.08708">Consciousness in artificial intelligence</a></span> &middot; <span class="ra">Butlin, P. et al.</span> &middot; <span class="rv">arXiv</span> <span class="tag opt">optional</span></span></div>
+        <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://doi.org/10.1016/j.tics.2024.01.011">Dissociating language and thought in large language models</a></span> &middot; <span class="ra">Mahowald, K. et al.</span> &middot; <span class="rv">Trends in Cognitive Sciences</span></span></div>
+        <div class="ref"><span class="yr">2026</span><span class="rmain"><span class="rt"><a href="https://academic.oup.com/nc/article/2026/1/niag002/8487499">Beyond computational equivalence: the behavioural inference principle</a></span> &middot; <span class="ra">Palminteri, S. &amp; Wu, C. M.</span> &middot; <span class="rv">Neuroscience of Consciousness</span> <span class="tag primary">primary</span></span></div>
+        <div class="ref"><span class="yr">2026</span><span class="rmain"><span class="rt"><a href="https://www.sciencedirect.com/science/article/pii/S2352154626000367">The cognitive biases that may exacerbate inflationary and deflationary positions about LLMs</a></span> &middot; <span class="ra">Palminteri, S. &amp; Pistilli, G.</span> &middot; <span class="rv">Current Opinion in Behavioral Sciences</span></span></div>
+      </div>
+
+      <div class="rgroup">
+        <h4>Method &amp; tools for the practical</h4>
+        <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://aclanthology.org/2024.findings-acl.716/">Generalization or memorization (CDD contamination detection)</a></span> &middot; <span class="ra">Dong, Y. et al.</span> &middot; <span class="rv">Findings of ACL</span></span></div>
+        <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2310.11324">Quantifying LMs' sensitivity to spurious features in prompt design</a></span> &middot; <span class="ra">Sclar, M. et al.</span> &middot; <span class="rv">arXiv / ICLR</span></span></div>
+        <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://www.researchgate.net/publication/383805381_The_Behavioral_and_Social_Sciences_Need_Open_LLMs">The behavioral and social sciences need open LLMs</a></span> &middot; <span class="ra">Wulff, D., Hussain, Z. &amp; Mata, R.</span> &middot; <span class="rv">preprint</span></span></div>
+        <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2408.14352">LogProber: disentangling confidence from contamination</a></span> &middot; <span class="ra">Yax, N., Oudeyer, P.-Y. &amp; Palminteri, S.</span> &middot; <span class="rv">arXiv</span></span></div>
+        <div class="ref"><span class="yr">2025</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2404.04671">PhyloLM: inferring the phylogeny of large language models</a></span> &middot; <span class="ra">Yax, N., Oudeyer, P.-Y. &amp; Palminteri, S.</span> &middot; <span class="rv">ICLR</span></span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><b>Machine Psychology</b> &mdash; PSL intensive week, 1&ndash;5 March 2027. Convened by Stefano Palminteri, Human Reinforcement Learning team, ENS&ndash;PSL / Inserm.</p>
+  <p>Draft course page. Timetable, room and provider details to be confirmed before the teaching week. Reading links point to the publisher of record or an open preprint; the methods chapter is distributed in class.</p>
+</footer>
+
+</body>
+</html>
