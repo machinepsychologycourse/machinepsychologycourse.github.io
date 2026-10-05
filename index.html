@@ -245,6 +245,20 @@
   .callout p:last-child { margin-bottom: 0; }
   .pill { display:inline-block; font-family: var(--sans); font-size: 0.72rem; background:#fff; border:1px solid var(--line); border-radius: 20px; padding: 0.25rem 0.8rem; margin: 0.2rem 0.3rem 0.2rem 0; }
 
+  /* ---- Team ---- */
+  .team { display: flex; gap: 1.4rem; flex-wrap: wrap; margin: 1.4rem 0; }
+  .person {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.3rem 1.5rem;
+    flex: 1 1 220px;
+    max-width: 300px;
+  }
+  .person h4 { margin: 0 0 0.25rem; font-size: 1.05rem; font-weight: 600; }
+  .person .role { font-family: var(--sans); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.6rem; }
+  .person a { font-family: var(--sans); font-size: 0.82rem; }
+
   footer { max-width: var(--maxw); margin: 0 auto; padding: 2.5rem 1.5rem 3.5rem; font-family: var(--sans); font-size: 0.82rem; color: var(--faint); }
   footer a { color: var(--muted); }
 
@@ -283,6 +297,7 @@
     <li><a href="#topics">Project topics</a></li>
     <li><a href="#assessment">Assessment</a></li>
     <li><a href="#readings">Readings</a></li>
+    <li><a href="#team">Team</a></li>
   </ul>
 </nav>
 
@@ -590,6 +605,23 @@
         <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://www.researchgate.net/publication/383805381_The_Behavioral_and_Social_Sciences_Need_Open_LLMs">The behavioral and social sciences need open LLMs</a></span> &middot; <span class="ra">Wulff, D., Hussain, Z. &amp; Mata, R.</span> &middot; <span class="rv">preprint</span></span></div>
         <div class="ref"><span class="yr">2024</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2408.14352">LogProber: disentangling confidence from contamination</a></span> &middot; <span class="ra">Yax, N., Oudeyer, P.-Y. &amp; Palminteri, S.</span> &middot; <span class="rv">arXiv</span></span></div>
         <div class="ref"><span class="yr">2025</span><span class="rmain"><span class="rt"><a href="https://arxiv.org/abs/2404.04671">PhyloLM: inferring the phylogeny of large language models</a></span> &middot; <span class="ra">Yax, N., Oudeyer, P.-Y. &amp; Palminteri, S.</span> &middot; <span class="rv">ICLR</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TEAM ===================== -->
+  <section id="team">
+    <p class="sec-label">Instructors</p>
+    <h2>Team</h2>
+    <div class="team">
+      <div class="person">
+        <h4>Stefano Palminteri</h4>
+        <p class="role">Convenor</p>
+        <a href="https://sites.google.com/site/stefanopalminteri/home">Personal website →</a>
+      </div>
+      <div class="person">
+        <h4>Stefan de Lavergne</h4>
+        <p class="role">Teaching assistant</p>
       </div>
     </div>
   </section>
